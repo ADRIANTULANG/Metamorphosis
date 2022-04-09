@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:metamorphosis/BottomNavigator/controller/bottomnav_controller.dart';
 import 'package:metamorphosis/Homescreen/controller/homescreen_controller.dart';
+import 'package:metamorphosis/storage.dart';
 import 'package:sizer/sizer.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -23,18 +25,24 @@ class HomeScreenView extends GetView<HomeScreenController> {
                     // mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Hi user!",
-                        style: TextStyle(
-                            fontSize: 30.sp,
-                            color: Colors.white,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 10.0,
-                                color: Colors.black,
-                                offset: Offset(5.0, 5.0),
-                              ),
-                            ]),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Container(
+                        width: 70.w,
+                        child: Text(
+                          "Hi ${Get.find<StorageService>().box.read('firstname')}!",
+                          style: TextStyle(
+                              fontSize: 25.sp,
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 10.0,
+                                  color: Colors.black,
+                                  offset: Offset(5.0, 5.0),
+                                ),
+                              ]),
+                        ),
                       ),
                       Text(
                         "Start your journey at metamorphosis",
@@ -122,30 +130,42 @@ class HomeScreenView extends GetView<HomeScreenController> {
                     Column(
                       children: [
                         Container(
-                          child: CircularPercentIndicator(
-                            radius: 60.0,
-                            lineWidth: 9.0,
-                            percent: .9,
-                            animation: true,
-                            animationDuration: 2500,
-                            center: Text(
-                              "90%",
-                              style: TextStyle(
-                                fontSize: 9.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                          child: Obx(
+                            () => CircularPercentIndicator(
+                              radius: 60.0,
+                              lineWidth: 9.0,
+                              percent: (double.parse(
+                                      Get.find<BottomNavController>()
+                                          .dailyProgress
+                                          .value) /
+                                  100),
+                              animation: true,
+                              animationDuration: 2500,
+                              center: Obx(
+                                () => Text(
+                                  double.parse(Get.find<BottomNavController>()
+                                              .dailyProgress
+                                              .value)
+                                          .toStringAsFixed(0) +
+                                      "%",
+                                  style: TextStyle(
+                                    fontSize: 9.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
+                              backgroundColor: Colors.grey,
+                              progressColor: Colors.deepPurple,
+                              circularStrokeCap: CircularStrokeCap.round,
                             ),
-                            backgroundColor: Colors.white,
-                            progressColor: Colors.deepPurple,
-                            circularStrokeCap: CircularStrokeCap.round,
                           ),
                         ),
                         SizedBox(
                           height: 1.h,
                         ),
                         Text(
-                          "Your Current Progress",
+                          "Current Daily Progress",
                           style: TextStyle(
                             fontSize: 9.sp,
                             fontWeight: FontWeight.bold,
@@ -163,7 +183,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
               Container(
                 height: 37.h,
                 width: 90.w,
-                padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                padding: EdgeInsets.only(left: 5.w, right: 5.w),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20)),
@@ -183,39 +203,110 @@ class HomeScreenView extends GetView<HomeScreenController> {
                     SizedBox(
                       height: 1.h,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 28.h,
-                          width: 33.w,
-                          decoration: BoxDecoration(
-                              color: Colors.pink,
-                              borderRadius: BorderRadius.circular(35)),
-                        ),
-                        Container(
-                          height: 28.h,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                height: 13.5.h,
-                                width: 33.w,
+                    Container(
+                      height: 27.h,
+                      width: 100.w,
+                      // color: Colors.red,
+                      child: Obx(
+                        () => ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          // physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount:
+                              controller.plans_for_task_over_view.length > 3
+                                  ? 3
+                                  : controller.plans_for_task_over_view.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: EdgeInsets.only(left: 2.w, right: 2.w),
+                              child: Container(
                                 decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(20)),
+                                    color: Colors.pink,
+                                    borderRadius: BorderRadius.circular(25)),
+                                height: 14.h,
+                                width: 75.w,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 2.h,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          left: 5.w, right: 5.w),
+                                      width: 100.w,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        controller
+                                            .plans_for_task_over_view[index]
+                                            .diagnosis,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 15.sp),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 2.h,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          left: 5.w, right: 5.w),
+                                      width: 100.w,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        controller
+                                            .plans_for_task_over_view[index]
+                                            .plan,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 15.sp),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 2.h,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        child: InkWell(
+                                          onTap: () {
+                                            controller.go_to_task(
+                                                task: controller
+                                                    .plans_for_task_over_view[
+                                                        index]
+                                                    .diagnosis);
+                                          },
+                                          child: Container(
+                                            height: 8.h,
+                                            width: 50.w,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                border: Border.all(
+                                                    color: Colors.black)),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "View Task",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                  fontSize: 15.sp),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                              Container(
-                                height: 13.5.h,
-                                width: 33.w,
-                                decoration: BoxDecoration(
-                                    color: Colors.deepPurpleAccent,
-                                    borderRadius: BorderRadius.circular(35)),
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                      ],
+                      ),
                     )
                   ],
                 ),

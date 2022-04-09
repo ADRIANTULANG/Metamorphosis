@@ -150,6 +150,7 @@ class RegistrationViewPersonalInfo extends GetView<RegistrationController> {
                           child: Container(
                             alignment: Alignment.center,
                             child: TextField(
+                              controller: controller.age,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(left: 10.w),
                                 border: InputBorder.none,
@@ -185,6 +186,7 @@ class RegistrationViewPersonalInfo extends GetView<RegistrationController> {
                           child: Container(
                             alignment: Alignment.center,
                             child: TextField(
+                              controller: controller.gender,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(left: 4.w),
                                 border: InputBorder.none,
@@ -220,6 +222,7 @@ class RegistrationViewPersonalInfo extends GetView<RegistrationController> {
                           child: Container(
                             alignment: Alignment.center,
                             child: TextField(
+                              controller: controller.heigth,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(left: 5.w),
                                 border: InputBorder.none,
@@ -255,6 +258,7 @@ class RegistrationViewPersonalInfo extends GetView<RegistrationController> {
                           child: Container(
                             alignment: Alignment.center,
                             child: TextField(
+                              controller: controller.weigth,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(left: 4.w),
                                 border: InputBorder.none,
@@ -290,6 +294,7 @@ class RegistrationViewPersonalInfo extends GetView<RegistrationController> {
                           child: Container(
                             alignment: Alignment.center,
                             child: TextField(
+                              controller: controller.address,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(left: 2.5.w),
                                 border: InputBorder.none,
@@ -325,6 +330,7 @@ class RegistrationViewPersonalInfo extends GetView<RegistrationController> {
                           child: Container(
                             alignment: Alignment.center,
                             child: TextField(
+                              controller: controller.career,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(left: 4.5.w),
                                 border: InputBorder.none,

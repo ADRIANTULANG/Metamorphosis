@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:metamorphosis/Chartscreen/controller/chartscreen_controller.dart';
+import 'package:metamorphosis/Destress/api/destress_api.dart';
 
 class DeStressController extends GetxController {
   @override
@@ -48,6 +49,12 @@ class DeStressController extends GetxController {
     Get.find<ChartScreenController>().perceived_stress.value = perceivedStress;
     Get.find<ChartScreenController>().perceived_Stress_percent_Value.value =
         double.parse((pss / 40).toStringAsFixed(2).toString());
+    await DeStressApi.delete_stress_level();
+    await DeStressApi.insert_stress_level(
+        stress_level: perceivedStress,
+        stress_percent:
+            double.parse((pss / 40).toStringAsFixed(2).toString()).toString());
+    await Get.find<ChartScreenController>().get_stress_level();
     Get.back();
   }
 

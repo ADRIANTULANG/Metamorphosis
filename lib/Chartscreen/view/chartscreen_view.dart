@@ -1,7 +1,11 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:metamorphosis/BottomNavigator/controller/bottomnav_controller.dart';
 import 'package:metamorphosis/Chartscreen/controller/chartscreen_controller.dart';
-import 'package:metamorphosis/Destress/view/destress_view.dart';
+import 'package:metamorphosis/Chartscreen/dialog/chartscreen_dialog.dart';
+import 'package:metamorphosis/Homescreen/controller/homescreen_controller.dart';
+import 'package:metamorphosis/storage.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -17,6 +21,9 @@ class ChartScreenView extends GetView<ChartScreenController> {
           physics: NeverScrollableScrollPhysics(),
           child: Column(
             children: [
+              SizedBox(
+                height: 2.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -24,18 +31,21 @@ class ChartScreenView extends GetView<ChartScreenController> {
                     // mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Hi user!",
-                        style: TextStyle(
-                            fontSize: 30.sp,
-                            color: Colors.white,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 10.0,
-                                color: Colors.black,
-                                offset: Offset(5.0, 5.0),
-                              ),
-                            ]),
+                      Container(
+                        width: 70.w,
+                        child: Text(
+                          "Hi  ${Get.find<StorageService>().box.read('firstname')}!",
+                          style: TextStyle(
+                              fontSize: 25.sp,
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 10.0,
+                                  color: Colors.black,
+                                  offset: Offset(5.0, 5.0),
+                                ),
+                              ]),
+                        ),
                       ),
                       Text(
                         "Start your journey at metamorphosis",
@@ -74,156 +84,99 @@ class ChartScreenView extends GetView<ChartScreenController> {
                                 height: 1.h,
                               ),
                               Text(
-                                "Daily Progress",
+                                "Weekly Progress",
                                 style: TextStyle(
                                     fontSize: 13.sp,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(
-                                height: 2.h,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 1.w,
-                                  ),
-                                  Container(width: 6.w, child: Text("M")),
-                                  Container(
-                                    child: new LinearPercentIndicator(
-                                      width: 35.w,
-                                      animation: true,
-                                      lineHeight: 1.5.h,
-                                      animationDuration: 2500,
-                                      percent: 0.8,
-                                      backgroundColor: Colors.white,
-                                      // center: Text("80.0%"),
-                                      barRadius: Radius.circular(15),
-                                      progressColor: Colors.deepPurpleAccent,
+                              Container(
+                                height: 20.h,
+                                width: 42.w,
+                                // color: Colors.red,
+                                alignment: Alignment.topCenter,
+                                child: Container(
+                                  child: Obx(
+                                    () => ListView.builder(
+                                      padding: EdgeInsets.only(top: 2.h),
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount:
+                                          controller.weeklyProgressList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Container(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 1.w,
+                                                  ),
+                                                  Container(
+                                                    width: 6.w,
+                                                    child: Text(
+                                                      "W" +
+                                                          controller
+                                                              .weeklyProgressList[
+                                                                  index]
+                                                              .week,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 9.sp),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child:
+                                                        new LinearPercentIndicator(
+                                                      width: 35.w,
+                                                      animation: true,
+                                                      lineHeight: 1.5.h,
+                                                      animationDuration: 2500,
+                                                      percent: double.parse(
+                                                          controller
+                                                              .weeklyProgressList[
+                                                                  index]
+                                                              .progressPercent),
+                                                      backgroundColor:
+                                                          Colors.grey,
+                                                      center: Text(
+                                                        (double.parse(controller
+                                                                        .weeklyProgressList[
+                                                                            index]
+                                                                        .progressPercent) *
+                                                                    100)
+                                                                .toStringAsFixed(
+                                                                    0) +
+                                                            "%",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 7.5.sp),
+                                                      ),
+                                                      barRadius:
+                                                          Radius.circular(15),
+                                                      progressColor: Colors
+                                                          .deepPurpleAccent,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 1.h,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 1.w,
-                                  ),
-                                  Container(width: 6.w, child: Text("T")),
-                                  Container(
-                                    child: new LinearPercentIndicator(
-                                      width: 35.w,
-                                      animation: true,
-                                      lineHeight: 1.5.h,
-                                      animationDuration: 2500,
-                                      percent: 0.4,
-                                      backgroundColor: Colors.white,
-                                      // center: Text("70.0%"),
-                                      barRadius: Radius.circular(15),
-                                      progressColor: Colors.deepPurpleAccent,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 1.w,
-                                  ),
-                                  Container(width: 6.w, child: Text("W")),
-                                  Container(
-                                    child: new LinearPercentIndicator(
-                                      width: 35.w,
-                                      animation: true,
-                                      lineHeight: 1.5.h,
-                                      animationDuration: 2500,
-                                      percent: 0.95,
-                                      backgroundColor: Colors.white,
-                                      // center: Text("70.0%"),
-                                      barRadius: Radius.circular(15),
-                                      progressColor: Colors.deepPurpleAccent,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 1.w,
-                                  ),
-                                  Container(width: 6.w, child: Text("TH")),
-                                  Container(
-                                    child: new LinearPercentIndicator(
-                                      width: 35.w,
-                                      animation: true,
-                                      lineHeight: 1.5.h,
-                                      animationDuration: 2500,
-                                      backgroundColor: Colors.white,
-                                      percent: 0.7,
-                                      // center: Text("70.0%"),
-                                      barRadius: Radius.circular(15),
-                                      progressColor: Colors.deepPurpleAccent,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 1.w,
-                                  ),
-                                  Container(width: 6.w, child: Text("F")),
-                                  Container(
-                                    child: new LinearPercentIndicator(
-                                      width: 35.w,
-                                      animation: true,
-                                      lineHeight: 1.5.h,
-                                      animationDuration: 2500,
-                                      backgroundColor: Colors.white,
-                                      percent: 0.9,
-                                      // center: Text("90.0%"),
-                                      barRadius: Radius.circular(15),
-                                      progressColor: Colors.deepPurpleAccent,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 1.w,
-                                  ),
-                                  Container(width: 6.w, child: Text("S")),
-                                  Container(
-                                    child: new LinearPercentIndicator(
-                                      width: 35.w,
-                                      animation: true,
-                                      lineHeight: 1.5.h,
-                                      animationDuration: 2500,
-                                      backgroundColor: Colors.white,
-                                      percent: 0.6,
-                                      // center: Text("60.0%"),
-                                      barRadius: Radius.circular(15),
-                                      progressColor: Colors.deepPurpleAccent,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              )
                             ],
                           ),
                           SizedBox(
@@ -235,25 +188,39 @@ class ChartScreenView extends GetView<ChartScreenController> {
                                 height: 15.w,
                               ),
                               Container(
-                                child: CircularPercentIndicator(
-                                    radius: 14.w,
-                                    lineWidth: 2.w,
-                                    percent: 0.30,
-                                    animation: true,
-                                    animationDuration: 2500,
-                                    center: new Text(
-                                      "30%",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    progressColor: Colors.deepPurpleAccent,
-                                    circularStrokeCap: CircularStrokeCap.round),
+                                child: Obx(
+                                  () => CircularPercentIndicator(
+                                      radius: 14.w,
+                                      lineWidth: 2.w,
+                                      percent: (double.parse(
+                                              Get.find<BottomNavController>()
+                                                  .dailyProgress
+                                                  .value) /
+                                          100),
+                                      animation: true,
+                                      animationDuration: 2500,
+                                      center: Obx(
+                                        () => Text(
+                                          double.parse(Get.find<
+                                                          BottomNavController>()
+                                                      .dailyProgress
+                                                      .value)
+                                                  .toStringAsFixed(0) +
+                                              "%",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      progressColor: Colors.deepPurpleAccent,
+                                      circularStrokeCap:
+                                          CircularStrokeCap.round),
+                                ),
                               ),
                               SizedBox(
                                 height: 5.w,
                               ),
                               Text(
-                                "Your Current",
+                                "Current Daily",
                                 style: TextStyle(
                                     fontSize: 11.sp,
                                     color: Colors.black,
@@ -307,7 +274,10 @@ class ChartScreenView extends GetView<ChartScreenController> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Get.to(() => DeStressView());
+                                  // Get.to(() => DeStressView());
+                                  ChartScreenDialog.bottomSheetCallendar(
+                                      plan: "De-Stress",
+                                      controller: controller);
                                 },
                                 child: Container(
                                   height: 4.h,
@@ -372,19 +342,29 @@ class ChartScreenView extends GetView<ChartScreenController> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Container(
-                                child: CircularPercentIndicator(
-                                    radius: 10.w,
-                                    lineWidth: 2.w,
-                                    percent: 0.50,
-                                    animation: true,
-                                    animationDuration: 2500,
-                                    center: new Text(
-                                      "50%",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    progressColor: Colors.deepPurpleAccent,
-                                    circularStrokeCap: CircularStrokeCap.round),
+                                child: Obx(
+                                  () => CircularPercentIndicator(
+                                      radius: 10.w,
+                                      lineWidth: 2.w,
+                                      percent: Get.find<HomeScreenController>()
+                                          .days_remaining_in_percent
+                                          .value,
+                                      animation: true,
+                                      animationDuration: 2500,
+                                      center: new Text(
+                                        (Get.find<HomeScreenController>()
+                                                        .days_remaining_in_percent
+                                                        .value *
+                                                    100)
+                                                .toStringAsFixed(0) +
+                                            "%",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      progressColor: Colors.deepPurpleAccent,
+                                      circularStrokeCap:
+                                          CircularStrokeCap.round),
+                                ),
                               ),
                               Column(
                                 children: [
@@ -404,24 +384,22 @@ class ChartScreenView extends GetView<ChartScreenController> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Container(
-                                height: 4.h,
-                                width: 25.w,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Colors.blueAccent,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Text(
-                                  "Predict",
-                                  style: TextStyle(
-                                      fontSize: 8.sp,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
+
+                              // Container(
+                              //   height: 4.h,
+                              //   width: 25.w,
+                              //   alignment: Alignment.center,
+                              //   decoration: BoxDecoration(
+                              //       color: Colors.blueAccent,
+                              //       borderRadius: BorderRadius.circular(10)),
+                              //   child: Text(
+                              //     "Predict",
+                              //     style: TextStyle(
+                              //         fontSize: 8.sp,
+                              //         color: Colors.white,
+                              //         fontWeight: FontWeight.bold),
+                              //   ),
+                              // )
                             ],
                           ),
                         ),
@@ -440,6 +418,19 @@ class ChartScreenView extends GetView<ChartScreenController> {
                                 decoration: BoxDecoration(
                                     color: Colors.pink[100],
                                     borderRadius: BorderRadius.circular(10)),
+                                alignment: Alignment.center,
+                                child: Obx(
+                                  () => Text(
+                                    Get.find<HomeScreenController>()
+                                        .days_remaining
+                                        .value
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 40.sp,
+                                        color: Colors.white),
+                                  ),
+                                ),
                               ),
                               Column(
                                 children: [

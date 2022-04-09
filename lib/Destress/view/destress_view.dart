@@ -358,7 +358,7 @@ class DeStressView extends GetView<DeStressController> {
                 color: Colors.deepPurple,
                 borderRadius: BorderRadius.circular(30)),
             child: Text(
-              "De-Stress",
+              "D O N E",
               style: AppStyle.bodyText(color: Colors.white, fontsize: 13),
             ),
           ),

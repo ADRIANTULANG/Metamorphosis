@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:metamorphosis/BottomNavigator/view/bottomnav_view.dart';
 
 import 'package:metamorphosis/Login/controller/login_controller.dart';
 import 'package:metamorphosis/Registration/view/registration_view1.dart';
@@ -65,8 +64,10 @@ class LoginView extends GetView<LoginController> {
                       color: Colors.grey,
                     )),
                 child: TextField(
+                  controller: controller.username,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(left: 5.w),
+                    suffixIcon: Icon(Icons.email),
+                    contentPadding: EdgeInsets.only(left: 5.w, top: 3.5.w),
                     border: InputBorder.none,
                   ),
                 ),
@@ -94,8 +95,11 @@ class LoginView extends GetView<LoginController> {
                       color: Colors.grey,
                     )),
                 child: TextField(
+                  controller: controller.password,
+                  obscureText: true,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(left: 5.w),
+                    suffixIcon: Icon(Icons.lock),
+                    contentPadding: EdgeInsets.only(left: 5.w, top: 3.5.w),
                     border: InputBorder.none,
                   ),
                 ),
@@ -105,7 +109,8 @@ class LoginView extends GetView<LoginController> {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(() => BottomNavScreenView());
+                  // Get.to(() => BottomNavScreenView());
+                  controller.login(context: context);
                 },
                 child: Container(
                     height: 6.h,
