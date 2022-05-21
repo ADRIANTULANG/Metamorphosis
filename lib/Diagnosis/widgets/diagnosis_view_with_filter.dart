@@ -53,7 +53,9 @@ class WithFilter extends GetView<DiagnosisController> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             "score: " +
-                                controller.diagnosisList[mainindex].score,
+                                double.parse(controller
+                                        .diagnosisList[mainindex].score)
+                                    .toStringAsFixed(2),
                             style: AppStyle.headers(
                                 color: Colors.black, fontsize: 10),
                           ),
